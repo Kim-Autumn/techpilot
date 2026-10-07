@@ -2111,7 +2111,8 @@
     <?php
     $reqUriPath = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?? '/';
     $reqUriClean = trim((string)$reqUriPath, '/');
-    $isHomePage = ($reqUriClean === '' || $reqUriClean === 'index.php' || $reqUriClean === 'home' || $reqUriClean === 'home/index');
+    $basePathClean = trim((string)parse_url(defined('BASE_URL') ? BASE_URL : '', PHP_URL_PATH), '/');
+    $isHomePage = !empty($isHome) || in_array($reqUriClean, ['', 'index.php', 'home', 'home/index', $basePathClean, $basePathClean . '/index.php', $basePathClean . '/public'], true);
     $popupBanner = $isHomePage ? getActivePopupBanner() : null; 
     $popupUser = currentUser();
     $popupScopeKey = ($popupUser && !empty($popupUser['id'])) ? 'user_' . (int)$popupUser['id'] : 'guest';
